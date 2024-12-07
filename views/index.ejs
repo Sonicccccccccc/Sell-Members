@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Verification</title>
+    <!-- إضافة مكتبة Bootstrap من CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- أيقونة ديسكورد -->
+    <link href="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-4-1.png" rel="icon" sizes="16x16" type="image/png">
+    <style>
+        body {
+            background-color: #24292e;
+            color: #eaeaea;
+            text-align: center;
+            padding: 50px;
+        }
+        .box {
+            background-color: #31363f;
+            border: 2px solid #181a1f;
+            padding: 60px;
+            margin: 100px auto;
+            border-radius: 5px;
+            width: 400px;
+        }
+        .btn {
+            background-color: #31363f;
+            color: #fff;
+            padding: 10px 22px;
+        }
+        .btn:hover {
+            background-color: #181a1f;
+            color: #fff;
+        }
+        img {
+            width: 200px;
+            border-radius: 5%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <!-- صورة السيرفر أو التحقق -->
+        <img src="https://media.discordapp.net/attachments/851389970840944640/851390759998586910/755244169898885160.gif" alt="Verification">
+        <!-- زر التحقق -->
+        <a href="/login" class="btn">توثيق</a>
+        <!-- نص يظهر إذا كان المستخدم غير موثوق -->
+        <h2>غير موثوق</h2>
+        <p>أنت غير موثوق، للتوثيق اضغط على الزر.</p>
+    </div>
+
+    <script>
+        window.onload = () => {
+            // استخراج كود التفويض (Authorization code) من الرابط إذا كان موجوداً
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+
+            if (code) {
+                // إرسال طلب التحقق مع كود التفويض
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/auth/discord/callback"); // ضع رابط الـ API هنا
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        console.log("تم التوثيق بنجاح");
+                    } else {
+                        console.log("فشل التوثيق");
+                    }
+                };
+                xhr.send("code=" + code);
+            }
+        };
+    </script>
+</body>
+</html>
